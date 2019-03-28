@@ -9,8 +9,8 @@ import javax.swing.JTextField;
 class userDisplay extends JFrame{
 	
 	JPanel pan;
-	JLabel jl1, jl2, jl3;
-	JTextField key, plaintext, cyphertext;
+	JLabel jl1, jl2;
+	JTextField key, text;
 	JButton encryption, decryption,exit;
 	
 	
@@ -20,29 +20,23 @@ class userDisplay extends JFrame{
 		
 		//JLabel
 		jl1 = new JLabel("KEY");
-		jl2 = new JLabel("평문");
-		jl3 = new JLabel("암호");
+		jl2 = new JLabel("평문/암호");
 		
-		jl1.setBounds(50, 20, 100, 30);
-		jl2.setBounds(50, 60, 100, 30);
-		jl3.setBounds(50, 100, 100, 30);
+		jl1.setBounds(50, 20, 100, 50);
+		jl2.setBounds(50, 80, 100, 50);
 		
 		pan.add(jl1);
 		pan.add(jl2);
-		pan.add(jl3);
 		
 		//JTextField
 		key = new JTextField(300);
-		plaintext = new JTextField(300);
-		cyphertext = new JTextField(300);
+		text = new JTextField(300);
 		
-		key.setBounds(130, 20, 300, 30);
-		plaintext.setBounds(130, 60, 300, 30);
-		cyphertext.setBounds(130, 100, 300, 30);
+		key.setBounds(130, 20, 300, 50);
+		text.setBounds(130, 80, 300, 50);
 		
 		pan.add(key);
-		pan.add(plaintext);
-		pan.add(cyphertext);
+		pan.add(text);
 		
 		//JButton
 		encryption = new JButton("암호화");
