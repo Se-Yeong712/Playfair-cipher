@@ -130,6 +130,9 @@ class encryption{
 			if(plaintext.charAt(i) == ' ') {	//공백
 					
 			}
+			else if(plaintext.charAt(i) == 'z') {	//q/z변환
+					
+			}
 		}
 		
 		return plaintext;
