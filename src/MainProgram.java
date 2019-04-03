@@ -118,10 +118,24 @@ class encryption{
 		
 		System.out.println("key : " + key + "  text : " + text);
 		plate = new plate(key);
-		
+		plaintext(text);
 		
 		
 	}
+	
+	//평문 셋팅(공백제거, q/z변환 - > 표시하기(a이면 여기는 z가 q로 바뀐거다.), 삽입문자)  -> 암호화 하면 복호화도 같이 해주기 / 복호화누르면 복호화만
+	public String plaintext(String plaintext) {
+		
+		for(int i = 0;i<plaintext.length();i++) {
+			if(plaintext.charAt(i) == ' ') {	//공백
+					
+			}
+		}
+		
+		return plaintext;
+		
+	}
+	
 }
 
 class decryption{
@@ -130,9 +144,17 @@ class decryption{
 		
 		System.out.println("key : " + key + "  text : " + text);
 		plate = new plate(key);
-		
+		cyphertext(text);
 		
 	}
+	//암호문 셋팅
+	public String cyphertext(String cyphertext) {
+		
+		
+		
+		return cyphertext;
+	}
+	
 }
 
 //암호판 셋팅
@@ -171,12 +193,6 @@ class plate{
 	}
 }
 
-//평문, 암호문 셋팅
-class textset{
-	public textset() {
-		// TODO Auto-generated constructor stub
-	}
-}
 
 
 public class MainProgram{
