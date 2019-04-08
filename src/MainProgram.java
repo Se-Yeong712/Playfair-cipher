@@ -1,3 +1,4 @@
+import java.awt.Button;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,20 +13,9 @@ class userDisplay extends JFrame{
 	
 	JPanel pan;
 	JLabel jl1, jl2;
-	JTextField key, text;
-	JButton encryption, decryption,exit;
+	JTextField key, plaintext;
+	JButton encryption,exit;
 	encryption encry;
-	decryption decry;
-	
-	
-	public JTextField getKey() {
-		return key;
-	}
-
-
-	public JTextField getText() {
-		return text;
-	}
 
 
 	public userDisplay() {
@@ -34,7 +24,7 @@ class userDisplay extends JFrame{
 		
 		//JLabel
 		jl1 = new JLabel("KEY");
-		jl2 = new JLabel("평문/암호");
+		jl2 = new JLabel("PlainText");
 		
 		jl1.setBounds(50, 20, 100, 50);
 		jl2.setBounds(50, 80, 100, 50);
@@ -44,17 +34,16 @@ class userDisplay extends JFrame{
 		
 		//JTextField
 		key = new JTextField(300);
-		text = new JTextField(300);
+		plaintext = new JTextField(300);
 		
 		key.setBounds(130, 20, 300, 50);
-		text.setBounds(130, 80, 300, 50);
+		plaintext.setBounds(130, 80, 300, 50);
 		
 		pan.add(key);
-		pan.add(text);
+		pan.add(plaintext);
 		
 		//JButton
 		encryption = new JButton("암호화");
-		decryption = new JButton("복호화");
 		exit = new JButton("닫기");
 		
 		//버튼ActionListener
@@ -64,20 +53,8 @@ class userDisplay extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String keystr = key.getText();
-				String teststr = text.getText();
+				String teststr = plaintext.getText();
 				encry = new encryption(keystr, teststr);
-				
-			}
-		});
-		
-		//복호화 선택
-		decryption.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String keystr = key.getText();
-				String teststr = text.getText();
-				decry = new decryption(keystr, teststr);
 				
 			}
 		});
@@ -87,16 +64,17 @@ class userDisplay extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				//dispose();
+				
+				resultDisplay result = new resultDisplay();
+				
 			}
 		});
 		
 		encryption.setBounds(50, 180, 100, 50);
-		decryption.setBounds(190 , 180, 100, 50);
 		exit.setBounds(330, 180, 100, 50);
 
 		pan.add(encryption);
-		pan.add(decryption);
 		pan.add(exit);
 		
 		add(pan);		
@@ -112,18 +90,72 @@ class userDisplay extends JFrame{
 	
 }
 
+class resultDisplay extends JFrame{
+	JPanel pan;
+	JLabel title, encryresult, decryresult,jl1,jl2;
+	String cryptogram, plaintext;
+	encryption encry;
+	decryption decry;
+	JButton exit;
+
+	
+	public resultDisplay() {
+		pan = new JPanel();
+		pan.setLayout(null);
+		
+		
+		
+		title = new JLabel("결과");
+		jl1 = new JLabel("암호화된 문자열");
+		jl2 = new JLabel("복호화된 문자열");
+		
+		pan.add(title);
+		pan.add(jl1);
+		pan.add(jl2);
+		
+		title.setBounds(220, 20, 100, 20);
+		jl1.setBounds(30, 40, 300, 50);
+		jl2.setBounds(30, 80, 300, 50);
+		
+		//cryptogram = encry.getEncryresult();
+		//plaintext = decry.getDecryresult();
+		
+		encryresult = new JLabel("cryptogram");
+		decryresult = new JLabel("plaintext");
+		
+		
+		encryresult.setBounds(130, 20, 300, 50);
+		decryresult.setBounds(130, 80, 300, 50);
+		
+		exit = new JButton("닫기");
+		exit.setBounds(370, 300, 100, 50);
+		pan.add(exit);
+		
+		add(pan);		
+
+		setSize(500,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("다중문자치환암호프로그램");
+	
+		setVisible(true);
+		
+		
+	}
+}
+
 class encryption{
 	plate plate;
+	String encryresult = "초기값";
 	public encryption(String key,String text) {
 		
 		System.out.println("key : " + key + "  text : " + text);
 		plate = new plate(key);
-		plaintext(text);
+		encryresult = plaintext(text);
 		
 		
 	}
 	
-	//평문 셋팅(공백제거, q/z변환 - > 표시하기(a이면 여기는 z가 q로 바뀐거다.), 삽입문자)  -> 암호화 하면 복호화도 같이 해주기 / 복호화누르면 복호화만
+	//평문 셋팅(공백제거, q/z변환 - > 표시하기(a이면 여기는 z가 q로 바뀐거다.), 삽입문자)  -> 암호화 하면 복호화도 같이 해주기 
 	public String plaintext(String plaintext) {
 		
 		for(int i = 0;i<plaintext.length();i++) {
@@ -138,16 +170,24 @@ class encryption{
 		return plaintext;
 		
 	}
+
+	public String getEncryresult() {
+		return encryresult;
+	}
 	
 }
 
+
+//복호화
 class decryption{
 	plate plate;
+	String decryresult = "초기값";
+	
 	public decryption(String key,String text) {
 		
 		System.out.println("key : " + key + "  text : " + text);
 		plate = new plate(key);
-		cyphertext(text);
+		decryresult = cyphertext(text);
 		
 	}
 	//암호문 셋팅
@@ -158,7 +198,13 @@ class decryption{
 		return cyphertext;
 	}
 	
+	public String getDecryresult() {
+		return decryresult;
+	}
+
+	
 }
+
 
 //암호판 셋팅
 class plate{
@@ -198,10 +244,12 @@ class plate{
 
 
 
+
 public class MainProgram{
 
 	public static void main(String[] args) {
-		userDisplay dis = new userDisplay();
+		//userDisplay dis = new userDisplay();
+		resultDisplay result = new resultDisplay();
 
 	}
 
