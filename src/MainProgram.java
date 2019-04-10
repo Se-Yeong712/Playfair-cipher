@@ -203,7 +203,7 @@ public class MainProgram extends JFrame {
 		String blank = "";
 		int blankcount = 0;
 
-		setplate(key); // 암호화에 쓰일 암호판 세팅
+		plate(key); // 암호화에 쓰일 암호판 세팅
 
 		for (int i = 0; i < text.length(); i++) {
 			if (text.charAt(i) == ' ') // 공백제거
@@ -222,18 +222,20 @@ public class MainProgram extends JFrame {
 			}
 		}
 
+		//암호화
 		encryresult = encryption(key, text);
 		encdisplay = encryresult;
 		
-		
 		System.out.println(encryresult + " ");
+		// 공백제거
 		for (int i = 0; i < encryresult.length(); i++) {
-			if (encryresult.charAt(i) == ' ') // 공백제거
+			if (encryresult.charAt(i) == ' ') 
 				encryresult = encryresult.substring(0, i) + encryresult.substring(i + 1, encryresult.length());
 		}
-
+		//복호화
 		decryresult = decryption(key, encryresult, z);
 
+		//띄어쓰기가 있었다는 표시인 blank를 통해서 글자 사이에 공백을 넣어준다. 
 		for (int i = 0; i < decryresult.length(); i++) {
 			if (blank.charAt(i) == '1') {
 				decryresult = decryresult.substring(0, i) + " " + decryresult.substring(i, decryresult.length());
@@ -242,31 +244,32 @@ public class MainProgram extends JFrame {
 
 		System.out.println(encryresult + " " + decryresult);
 
+		//결과 화면으로 결과를 보내준다.
 		resultDisplay result = new resultDisplay(key,encdisplay, decryresult,row);
 
 	}
 
 	public static String encryption(String key, String text) {
-		ArrayList<char[]> plaintext = new ArrayList<char[]>();
-		ArrayList<char[]> encrytext = new ArrayList<char[]>();
+		ArrayList<char[]> plaintext = new ArrayList<char[]>();//평문을 셋팅한 값이 들어간다.
+		ArrayList<char[]> encrytext = new ArrayList<char[]>();//암호화한 값이 들어간다.
 		int a1 = 0, a2 = 0, b1 = 0, b2 = 0;
 		String entext = "";
 
-		for (int i = 0; i < text.length(); i += 2) 	//arraylist
+		for (int i = 0; i < text.length(); i += 2) 		//두글자씩 끊어서 ArrayList에 넣어준다.
 		{
 			char[] temparr = new char[2];
 			temparr[0] = text.charAt(i);
 			try {
-				if (text.charAt(i) == text.charAt(i + 1)) // 같은 문자가 반복되면 x를 넣어준다.
+				if (text.charAt(i) == text.charAt(i + 1)) 	// 같은 문자가 반복되면 x를 넣어준다.
 				{
 					temparr[1] = 'x';
-					i--;
+					i--;	
 				} else {
 					temparr[1] = text.charAt(i + 1);
 				}
 			} catch (StringIndexOutOfBoundsException e) {
 				temparr[1] = 'x';
-				flag = true;
+				flag = true;		//문자열이 홀수로 끝난다는 flag
 			}
 			plaintext.add(temparr);
 		}
@@ -282,7 +285,7 @@ public class MainProgram extends JFrame {
 			for (int j = 0; j < plate.length; j++) // 위치체크
 			{
 				for (int k = 0; k < plate[j].length; k++) {
-					if (plate[j][k] == plaintext.get(i)[0]) {
+					if (plate[j][k] == plaintext.get(i)[0]) {	//평문의 암호퐌 위치를 확인하여 각각 a1(열)와 b1(행)에 넣어준다.
 						a1 = j;
 						b1 = k;
 					}
@@ -307,26 +310,26 @@ public class MainProgram extends JFrame {
 				tmpArr[1] = plate[a1][b2];
 			}
 
-			encrytext.add(tmpArr);
+			encrytext.add(tmpArr);		//암호화 결과를 넣어준다.
 
 		}
 
 		for (int i = 0; i < encrytext.size(); i++) {
-			entext += encrytext.get(i)[0] + "" + encrytext.get(i)[1] + " ";
+			entext += encrytext.get(i)[0] + "" + encrytext.get(i)[1] + " ";	//암호환 결과를 넣어준다.
 		}
 
 		return entext;
 	}
 
 	public static String decryption(String key, String text, String z) {
-		ArrayList<char[]> cryptogram = new ArrayList<char[]>(); // 암호
+		ArrayList<char[]> cryptogram = new ArrayList<char[]>();// 암호
 		ArrayList<char[]> decrytext = new ArrayList<char[]>(); // 복호화한 값
 		int a1 = 0, a2 = 0, b1 = 0, b2 = 0; 
 		String detext = "";
 
 		int lenthflag = 1;
 
-		for (int i = 0; i < text.length(); i += 2) {
+		for (int i = 0; i < text.length(); i += 2) {	//두글자씩 끊어서 ArrayList에 넣어준다.
 			char[] temparr = new char[2];
 			temparr[0] = text.charAt(i);
 			temparr[1] = text.charAt(i + 1);
@@ -338,7 +341,7 @@ public class MainProgram extends JFrame {
 			char[] tmpArr = new char[2];
 			for (int j = 0; j < plate.length; j++) {
 				for (int k = 0; k < plate[j].length; k++) {
-					if (plate[j][k] == cryptogram.get(i)[0]) {
+					if (plate[j][k] == cryptogram.get(i)[0]) {	//암호의 암호퐌 위치를 확인하여 각각 a1(열)와 b1(행)에 넣어준다.
 						a1 = j;
 						b1 = k;
 					}
@@ -349,6 +352,7 @@ public class MainProgram extends JFrame {
 				}
 			}
 
+			//복호화
 			if (a1 == a2) 			// 같은 행
 			{
 				tmpArr[0] = plate[a1][(b1 + 4) % 5];
@@ -363,11 +367,11 @@ public class MainProgram extends JFrame {
 				tmpArr[1] = plate[a1][b2];
 			}
 
-			decrytext.add(tmpArr);
+			decrytext.add(tmpArr);	//복호화한 값을 넣어준다.
 
 		}
 
-		for (int i = 0; i < decrytext.size(); i++) // 중복 문자열 돌려놓음
+		for (int i = 0; i < decrytext.size(); i++) // 중복문자 사이에 x를 넣은 것을 제거한다.
 		{
 			if (i != decrytext.size() - 1 && decrytext.get(i)[1] == 'x'
 					&& decrytext.get(i)[0] == decrytext.get(i + 1)[0]) {
@@ -384,36 +388,31 @@ public class MainProgram extends JFrame {
 
 		}
 
-		if (flag)
+		if (flag) //문자열이 홀수일 때 넣어줬던 x를 제거한다.
 			detext = detext.substring(0, detext.length() - 1);
 
 		return detext;
 	}
 
-	public static void setplate(String key) {
+	public static void plate(String key) {
 		String platekey = ""; // 중복제거한 문자열을 저장
-		boolean overflag = false; // 문자중복체크 flag
 
 		key += "abcdefghijklmnopqrstuvwxyz"; // 암호판을 만들기 위한 알파벳 추가
-		// 논리적 오류 -> 마지막 알파벳이 암호판에 나오지 않음 -> z를 q로 바꿔 알파벳을 25개로 만든다.
+		
+		//마지막 알파벳이 암호판에 나오지 않음 -> z를 q로 바꿔 알파벳을 25개로 만든다.
 		key = key.replace('z', 'q');
 		System.out.println(key);
 
-		// key의 중복처리
-		for (int i = 0; i < key.length(); i++) {
-			for (int j = 0; j < platekey.length(); j++) {
-				if (key.charAt(i) == platekey.charAt(j)) {
-					overflag = true;
-					break;
-				}
+		// key중복제거
+		for(int i = 0;i<key.length();i++) {
+			if(!platekey.contains(String.valueOf(key.charAt(i)))) {	//문자열에 해당 문자가 포함되어있는지 확인
+				platekey += String.valueOf(key.charAt(i)); //없다면 platekey에 추가
 			}
-			if (!(overflag))
-				platekey += key.charAt(i);
-			overflag = false;
 		}
+		 
 		System.out.println(platekey);
 
-		// 암호판에 알파벳 초기화
+		// 암호판에 중복제거한 key초기화
 		for (int i = 0, k = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++) {
 				plate[i][j] = platekey.charAt(k);
